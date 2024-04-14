@@ -1,0 +1,37 @@
+
+GET https://render-test-san.onrender.com/
+###
+
+GET https://render-test-san.onrender.com/api/persons
+
+###
+GET https://render-test-san.onrender.com/info 
+
+###
+GET https://render-test-san.onrender.com/api/persons/2
+
+###
+GET https://render-test-san.onrender.com/api/persons/6
+###
+DELETE https://render-test-san.onrender.com/api/persons/-1147667750782072
+
+###
+POST https://render-test-san.onrender.com/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "sim",
+    "number": "6056789899"
+}
+
+###bad post
+
+POST https://render-test-san.onrender.com/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "numer": "6056789899"
+}
+
+##unique name
+
