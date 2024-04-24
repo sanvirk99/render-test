@@ -119,6 +119,7 @@ app.post('/api/persons', (request, response) => {
   let same_name=persons.find(person=>{
     return person.name===request.body.name;
   })
+  
   if(same_name!==undefined){
     return response.status(400).json({
       error: 'person name is not unique' 
