@@ -60,27 +60,34 @@ app.get('/api/persons',(request,response)=>{
   //response.json(persons)
   Person.find({}).then(contacts=>{
     response.json(contacts)
-  })
+  }).catch(error => next(error))
 
 
 })
 
-
+//update
 app.get('/info',(request,response)=>{
   const entries=persons.length;
-  const timestamp=new Date().toUTCString();
-  const extra=new Date().getTimezoneOffset();
-  let string=`<p>Phonebook has info for ${entries} <br/> ${timestamp}+${extra} (Pacific Standard Time)<p>`;
-  response.send(string)
+
+  Person.countDocuments().then(result=>{
+    console.log(result);
+    const timestamp=new Date().toUTCString();
+    const extra=new Date().getTimezoneOffset();
+    let string=`<p>Phonebook has info for ${result} <br/> ${timestamp}+${extra} (Pacific Standard Time)<p>`;
+    response.send(string)
+  })
+  .catch(error => next(error))
+  
 
 })
 
+//update send response back
 app.get('/api/persons/:id',(request,response)=>{
 
   
-  Person.findByIdAndDelete(request.params.id)
+  Person.findById(request.params.id)
     .then(result => {
-      response.status(204).end();
+      response.json(result)
     }).catch(error =>{
       next(error)
     })

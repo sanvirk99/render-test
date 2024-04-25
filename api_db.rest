@@ -9,3 +9,10 @@ Content-Type: application/json
     "name": "sim",
     "number": "6056789899"
 }
+
+###
+
+GET http://localhost:3001/api/persons/6629ba6281a8d3cb1214351e
+
+###
+GET http://localhost:3001/info 
