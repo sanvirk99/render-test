@@ -11,7 +11,7 @@ const password = process.argv[2]
 
 
 const url =
-    `mongodb+srv://sanseerat99:${password}@cluster0.zfs2jgt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+    `mongodb+srv://sanseerat99:${password}@cluster0.zfs2jgt.mongodb.net/contacts?retryWrites=true&w=majority&appName=Cluster0`
 
 mongoose.set('strictQuery', false)
 
@@ -58,6 +58,7 @@ if (process.argv.length === 3) {
         process.exit(1)
     }
     contact.save().then(result => {
+        console.log(result)
         console.log(`added ${inputName} number ${inputNumber} to phonebook`)
         mongoose.connection.close()
     })

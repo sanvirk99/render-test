@@ -1,10 +1,18 @@
+require('dotenv').config()
 const http=require('http')
 const express=require('express');
 const { time } = require('console');
 const morgan = require('morgan');
 const cors= require('cors');
+const Contact=require('./models/contact');
+const contact = require('./models/contact');
+
+
+
 
 const app=express();
+
+
 
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 
@@ -48,7 +56,11 @@ app.get('/',(request,response) => {
 
 app.get('/api/persons',(request,response)=>{
 
-  response.json(persons)
+  //response.json(persons)
+  Contact.find({}).then(contacts=>{
+    response.json(contacts)
+  })
+
 
 })
 
@@ -116,39 +128,34 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  let same_name=persons.find(person=>{
-    return person.name===request.body.name;
+  // let same_name=persons.find(person=>{
+  //   return person.name===request.body.name;
+  // })
+
+  // if(same_name!==undefined){
+  //   return response.status(400).json({
+  //     error: 'person name is not unique' 
+  //   })
+  // }
+
+
+ 
+
+  let person = new Contact({
+    name: request.body.name,
+    number: request.body.number,
   })
   
-  if(same_name!==undefined){
-    return response.status(400).json({
-      error: 'person name is not unique' 
-    })
-  }
+  person.save().then(result=>{
+    console.log(result)
+    response.status(201).json(result)
+  })
 
-  let generateId = getRandomInt()
-  let invalid = true;
-  while (invalid) {
-    let matching = persons.find(person => {
-      return generateId === person.id
-    })
-    if (!matching) {
-      invalid = false;
-    }
-    generateId = getRandomInt()
-  }
-
-  let person = {
-    id: generateId,
-    name: request.body.name,
-    number: request.body.number
-  }
-  persons.push(person)
-  response.status(200).json(person)
+  
 
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
