@@ -7,8 +7,8 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "build:ui": "rm -rf dist && cd /Users/san/full-stack-open/part2/phonebook && npm run build && cp -r dist /Users/san/full-stack-open-part3",
-    "deploy:full": "npm run build:ui && cd /Users/san/full-stack-open-part3 && git add . && git commit -m uibuild && git push"
+    "build:ui": "rm -rf dist && cd /Users/san/WebDev/full-stack-open/part2/phonebook && npm run build && cp -r dist /Users/san/WebDev/full-stack-open-part3",
+    "deploy:full": "npm run build:ui && cd /Users/san/WebDev/full-stack-open-part3 && git add . && git commit -m uibuild && git push"
   },
   "author": "",
   "license": "ISC",

@@ -16,8 +16,21 @@ mongoose.connect(url)
 
 
 const contactSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minLength: 3,
+        required: true
+    },
+    number: {
+        type: String, // Define the type as String
+        validate: {
+          validator: function(value) {
+            // Regular expression to validate a Canadian phone number
+            return /^(?:\+?1-?)?(\d{3})-(\d{3})-(\d{4})$/.test(value);
+          }
+        },
+        required: true
+      }
 })
 
 contactSchema.set('toJSON', {
