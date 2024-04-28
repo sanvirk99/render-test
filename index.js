@@ -1,7 +1,5 @@
 require('dotenv').config()
-const http=require('http')
 const express=require('express');
-const { time, error } = require('console');
 const morgan = require('morgan');
 const cors= require('cors');
 const Person=require('./models/contact');
@@ -13,8 +11,7 @@ const app=express();
 
 
 
-morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
-
+morgan.token('body', function (req) { return JSON.stringify(req.body) })
 
 
 app.use(express.static('dist'))
@@ -55,7 +52,7 @@ app.get('/',(request,response) => {
 })
 
 
-app.get('/api/persons',(request,response)=>{
+app.get('/api/persons',(request,response, next)=>{
 
   //response.json(persons)
   Person.find({}).then(contacts=>{
@@ -66,8 +63,7 @@ app.get('/api/persons',(request,response)=>{
 })
 
 //update
-app.get('/info',(request,response)=>{
-  const entries=persons.length;
+app.get('/info',(request,response, next)=>{
 
   Person.countDocuments().then(result=>{
     console.log(result);
@@ -82,7 +78,7 @@ app.get('/info',(request,response)=>{
 })
 
 //update send response back
-app.get('/api/persons/:id',(request,response)=>{
+app.get('/api/persons/:id',(request,response, next)=>{
 
   
   Person.findById(request.params.id)
@@ -94,7 +90,7 @@ app.get('/api/persons/:id',(request,response)=>{
   
 })
 
-app.put('/api/persons/:id',(request,response)=>{
+app.put('/api/persons/:id',(request,response, next)=>{
 
   if (!verify(request.body)) {
     let error={
@@ -110,7 +106,7 @@ app.put('/api/persons/:id',(request,response)=>{
   }
 
   Person.findByIdAndUpdate(request.params.id,person,{new: true, runValidators: true, context: 'query'} )
-  .then(result => {
+  .then(() => {
     response.status(204).end();
   }).catch(error =>{
     next(error)
@@ -118,10 +114,10 @@ app.put('/api/persons/:id',(request,response)=>{
 
 })
 
-app.delete('/api/persons/:id',(request,response)=>{
+app.delete('/api/persons/:id',(request,response, next)=>{
 
   Person.findByIdAndDelete(request.params.id)
-  .then(result => {
+  .then(() => {
     response.status(204).end();
   }).catch(error =>{
     //genereate dedicated middle ware
@@ -129,10 +125,6 @@ app.delete('/api/persons/:id',(request,response)=>{
   })
 
 })
-
-function getRandomInt(){
-  return Math.floor(Math.random()*Number.MIN_SAFE_INTEGER)
-}
 
 
 function verify(body){
